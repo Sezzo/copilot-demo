@@ -1,0 +1,37 @@
+<div class="app-container">
+  <nav class="sidebar">
+    <div class="logo">
+      <h2>{{ title }}</h2>
+    </div>
+    <ul class="nav-menu">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <span class="icon">📊</span>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/todos" routerLinkActive="active" class="nav-link">
+          <span class="icon">✓</span>
+          To-Do
+        </a>
+      </li>
+      <li>
+        <a routerLink="/calendar" routerLinkActive="active" class="nav-link">
+          <span class="icon">📅</span>
+          Calendar
+        </a>
+      </li>
+      <li>
+        <a routerLink="/mood" routerLinkActive="active" class="nav-link">
+          <span class="icon">🌟</span>
+          Mood Tracker
+        </a>
+      </li>
+    </ul>
+  </nav>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

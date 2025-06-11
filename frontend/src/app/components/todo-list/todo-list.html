@@ -1,0 +1,115 @@
+<div class="todo-list">
+  <div class="todo-header">
+    <h1>📝 To-Do List</h1>
+    <button class="btn btn-primary" (click)="showForm = !showForm">
+      {{ showForm ? 'Cancel' : 'Add New Task' }}
+    </button>
+  </div>
+
+  <!-- Add Todo Form -->
+  <div class="card add-todo-form" *ngIf="showForm">
+    <div class="card-header">
+      <h3>Add New Task</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="title">Task Title *</label>
+          <input 
+            type="text" 
+            id="title" 
+            [(ngModel)]="newTodo.title" 
+            name="title"
+            placeholder="Enter task title..."
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea 
+            id="description" 
+            [(ngModel)]="newTodo.description" 
+            name="description"
+            placeholder="Task description (optional)..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="priority">Priority</label>
+          <select id="priority" [(ngModel)]="newTodo.priority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="dueDate">Due Date</label>
+          <input 
+            type="date" 
+            id="dueDate" 
+            [(ngModel)]="newTodo.dueDate" 
+            name="dueDate">
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success" [disabled]="!newTodo.title.trim()">
+            Add Task
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="showForm = false">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading" *ngIf="loading$ | async">
+    <p>Loading tasks...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error" *ngIf="error$ | async as error">
+    <p>Error: {{ error }}</p>
+  </div>
+
+  <!-- Todo List -->
+  <div class="todos-container" *ngIf="todos$ | async as todos">
+    <div *ngIf="todos.length === 0" class="empty-state">
+      <p>🎉 No tasks yet! Add your first task to get started.</p>
+    </div>
+    
+    <div class="todo-item" 
+         *ngFor="let todo of todos; trackBy: trackByTodoId"
+         [ngClass]="{ 'completed': todo.completed }">
+      <div class="todo-content">
+        <div class="todo-main">
+          <input 
+            type="checkbox" 
+            [checked]="todo.completed"
+            (change)="toggleComplete(todo)"
+            class="todo-checkbox">
+          <div class="todo-text">
+            <h4 [ngClass]="{ 'completed-text': todo.completed }">{{ todo.title }}</h4>
+            <p *ngIf="todo.description" class="todo-description">{{ todo.description }}</p>
+          </div>
+        </div>
+        
+        <div class="todo-meta">
+          <span class="priority-badge" [ngClass]="getPriorityClass(todo.priority)">
+            {{ todo.priority }}
+          </span>
+          <span *ngIf="todo.dueDate" class="due-date">
+            Due: {{ todo.dueDate | date:'shortDate' }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="todo-actions">
+        <button class="btn-icon btn-danger" (click)="deleteTodo(todo.id)" title="Delete">
+          🗑️
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
