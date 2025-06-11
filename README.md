@@ -69,6 +69,7 @@ copilot-demo/
 │   │   │   └── store/       # NgRx state management
 │   │   └── styles.scss      # Global styles
 │   └── package.json
+├── docs/                    # GitHub Pages deployment
 └── README.md
 ```
 
@@ -127,6 +128,43 @@ copilot-demo/
    cd frontend
    npm run build
    ```
+
+## 🌐 GitHub Pages Deployment
+
+The application is deployed on GitHub Pages and can be accessed at:
+**https://sezzo.github.io/copilot-demo/**
+
+### Deploy to GitHub Pages
+
+To build and deploy the frontend to GitHub Pages:
+
+```bash
+# Run the build script
+./build-gh-pages.sh
+```
+
+Or manually:
+
+```bash
+cd frontend
+npx ng build --configuration=github-pages
+cd ..
+cp -r docs/browser/* docs/
+rm -rf docs/browser docs/prerendered-routes.json docs/3rdpartylicenses.txt
+cp docs/index.html docs/404.html
+```
+
+The built files are placed in the `docs/` folder which is configured for GitHub Pages deployment.
+
+### GitHub Pages Setup
+
+1. Go to repository Settings → Pages
+2. Set Source to "Deploy from a branch"
+3. Select branch: `main`
+4. Select folder: `/docs`
+5. Save the configuration
+
+The site will be live at `https://sezzo.github.io/copilot-demo/` within a few minutes.
 
 ## 📚 API Documentation
 

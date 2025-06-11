@@ -52,6 +52,24 @@
               ],
               "outputHashing": "all"
             },
+            "github-pages": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "baseHref": "/copilot-demo/",
+              "outputPath": "../docs",
+              "index": "src/index.html"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
