@@ -1,0 +1,80 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h1>{{ greeting }}! 👋</h1>
+    <p>{{ currentDate | date:'fullDate' }}</p>
+  </header>
+
+  <div class="dashboard-grid">
+    <div class="card quick-stats">
+      <div class="card-header">
+        <h3>📊 Quick Overview</h3>
+      </div>
+      <div class="card-body">
+        <div class="stats-grid" *ngIf="todosStats$ | async as stats">
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-label">Total Tasks</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.pending }}</span>
+            <span class="stat-label">Pending</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.completed }}</span>
+            <span class="stat-label">Completed</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.highPriority }}</span>
+            <span class="stat-label">High Priority</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card quick-actions">
+      <div class="card-header">
+        <h3>⚡ Quick Actions</h3>
+      </div>
+      <div class="card-body">
+        <div class="actions-grid">
+          <a routerLink="/todos" class="action-button">
+            <span class="action-icon">✓</span>
+            <span class="action-text">Add Task</span>
+          </a>
+          <a routerLink="/calendar" class="action-button">
+            <span class="action-icon">📅</span>
+            <span class="action-text">Schedule Event</span>
+          </a>
+          <a routerLink="/mood" class="action-button">
+            <span class="action-icon">🌟</span>
+            <span class="action-text">Log Mood</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card motivation">
+      <div class="card-header">
+        <h3>💪 Today's Motivation</h3>
+      </div>
+      <div class="card-body">
+        <blockquote>
+          "The way to get started is to quit talking and begin doing."
+          <cite>- Walt Disney</cite>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="card weather">
+      <div class="card-header">
+        <h3>🌤️ Focus Time</h3>
+      </div>
+      <div class="card-body">
+        <p>Perfect time to tackle your most important tasks!</p>
+        <div class="focus-tips">
+          <p>💡 <strong>Tip:</strong> Start with your highest priority items when your energy is fresh.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

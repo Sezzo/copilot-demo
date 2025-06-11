@@ -1,0 +1,139 @@
+<div class="calendar">
+  <div class="calendar-header">
+    <h1>📅 Calendar</h1>
+    <button class="btn btn-primary" (click)="showForm = !showForm">
+      {{ showForm ? 'Cancel' : 'Add Event' }}
+    </button>
+  </div>
+
+  <!-- Add Event Form -->
+  <div class="card add-event-form" *ngIf="showForm">
+    <div class="card-header">
+      <h3>Create New Event</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="title">Event Title *</label>
+          <input 
+            type="text" 
+            id="title" 
+            [(ngModel)]="newEvent.title" 
+            name="title"
+            placeholder="Enter event title..."
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea 
+            id="description" 
+            [(ngModel)]="newEvent.description" 
+            name="description"
+            placeholder="Event description (optional)..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="startDate">Start Date & Time</label>
+            <input 
+              type="datetime-local" 
+              id="startDate" 
+              [(ngModel)]="newEvent.startDate" 
+              name="startDate"
+              (input)="updateStartDate($event)">
+          </div>
+          
+          <div class="form-group">
+            <label for="endDate">End Date & Time</label>
+            <input 
+              type="datetime-local" 
+              id="endDate" 
+              [(ngModel)]="newEvent.endDate" 
+              name="endDate"
+              (input)="updateEndDate($event)">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input 
+            type="text" 
+            id="location" 
+            [(ngModel)]="newEvent.location" 
+            name="location"
+            placeholder="Event location (optional)...">
+        </div>
+        
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="newEvent.isAllDay" 
+              name="isAllDay">
+            All Day Event
+          </label>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success" [disabled]="!newEvent.title.trim()">
+            Create Event
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading" *ngIf="loading">
+    <p>Loading events...</p>
+  </div>
+
+  <!-- Events List -->
+  <div class="events-container" *ngIf="!loading">
+    <div *ngIf="events.length === 0" class="empty-state">
+      <p>📅 No events scheduled yet! Add your first event to get started.</p>
+    </div>
+    
+    <div class="events-list" *ngIf="events.length > 0">
+      <div class="event-item" 
+           *ngFor="let event of events; trackBy: trackByEventId"
+           [ngClass]="{ 
+             'today': isToday(event.startDate), 
+             'upcoming': isUpcoming(event.startDate),
+             'all-day': event.isAllDay 
+           }">
+        <div class="event-content">
+          <div class="event-main">
+            <h4>{{ event.title }}</h4>
+            <p *ngIf="event.description" class="event-description">{{ event.description }}</p>
+          </div>
+          
+          <div class="event-meta">
+            <div class="event-time">
+              <span *ngIf="event.isAllDay" class="all-day-badge">All Day</span>
+              <span *ngIf="!event.isAllDay">
+                {{ event.startDate | date:'short' }} - {{ event.endDate | date:'short' }}
+              </span>
+              <span *ngIf="event.isAllDay">
+                {{ event.startDate | date:'mediumDate' }}
+              </span>
+            </div>
+            <div *ngIf="event.location" class="event-location">
+              📍 {{ event.location }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="event-actions">
+          <button class="btn-icon btn-danger" (click)="deleteEvent(event.id)" title="Delete">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

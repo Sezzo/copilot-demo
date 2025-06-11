@@ -1,0 +1,101 @@
+<div class="mood-tracker">
+  <div class="mood-header">
+    <h1>🌟 Mood Tracker</h1>
+    <p>Track your daily mood and see patterns over time</p>
+  </div>
+
+  <!-- Add Mood Form -->
+  <div class="card add-mood-form">
+    <div class="card-header">
+      <h3>How are you feeling today?</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="rating-section">
+          <div class="star-rating">
+            <span 
+              *ngFor="let star of stars" 
+              class="star"
+              [class.active]="star <= newMood.rating"
+              (click)="setRating(star)">
+              ⭐
+            </span>
+          </div>
+          <p class="mood-text">{{ getMoodText(newMood.rating) }}</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="notes">Notes (optional)</label>
+          <textarea 
+            id="notes" 
+            [(ngModel)]="newMood.notes" 
+            name="notes"
+            placeholder="What made you feel this way?"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Record Mood</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="card stats-card">
+    <div class="card-header">
+      <h3>📊 Your Mood Stats</h3>
+    </div>
+    <div class="card-body">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value">{{ stats.average | number:'1.1-1' }}</span>
+          <span class="stat-label">Overall Average</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ stats.weeklyAverage | number:'1.1-1' }}</span>
+          <span class="stat-label">This Week</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ stats.total }}</span>
+          <span class="stat-label">Total Entries</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Moods -->
+  <div class="card mood-history">
+    <div class="card-header">
+      <h3>📝 Recent Entries</h3>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="loading">
+        <p>Loading mood history...</p>
+      </div>
+
+      <div *ngIf="moods.length === 0 && !loading" class="empty-state">
+        <p>🌈 No mood entries yet! Start tracking your mood today.</p>
+      </div>
+
+      <div class="mood-list" *ngIf="moods.length > 0">
+        <div class="mood-entry" *ngFor="let mood of moods; trackBy: trackByMoodId">
+          <div class="mood-info">
+            <div class="mood-rating">
+              <span 
+                *ngFor="let star of getStarsArray(mood.rating)" 
+                class="star"
+                [class.filled]="star">
+                ⭐
+              </span>
+            </div>
+            <div class="mood-details">
+              <span class="mood-label">{{ getMoodText(mood.rating) }}</span>
+              <span class="mood-date">{{ mood.date | date:'short' }}</span>
+            </div>
+          </div>
+          <div class="mood-notes" *ngIf="mood.notes">
+            <p>{{ mood.notes }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
